@@ -17,3 +17,24 @@ try {
         throw error
 }
 }
+
+export const loginService=async({email,password})=>{
+    try {
+        const user=await User.findOne({email})
+if(!user){
+    throw new Error('Invalid email or password');
+}
+
+const isMatch=await user.comparePassword(password)
+if(!isMatch){
+    throw new Error('Invalid email or password');
+}
+
+return user
+
+    } catch (error) {
+        console.log('Error in loginService:', error.message);
+        throw error;
+        
+    }
+}
