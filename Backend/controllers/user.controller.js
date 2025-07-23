@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import { registerService,loginService } from "../services/user.service.js";
 import User from "../models/user.model.js";
+import uploadImage from "../utils/imageket.js";
 
 
 export const registerUser=async(req,res)=>{
@@ -11,10 +12,28 @@ export const registerUser=async(req,res)=>{
 if(!validationResult(req).isEmpty()) {
     return res.status(400).json({ errors: validationResult(req).array() });
 }
-const { name, email, password } = req.body;
-const user=await registerService({ name, email, password });
 
-const token=user.generateAuthToken();
+  if(!req.file){
+        return res.send('file not found')
+    }
+ const file = req.file;
+    const uploaded = await uploadImage.upload({
+      file: file.buffer, 
+      fileName: file.originalname,
+    });
+
+  
+    const url =uploaded.url
+
+const { name, email, password } = req.body;
+const userExists=await User.findOne({email})
+if(userExists){
+    return     res.status(400).json({message: 'User already exists'});
+        
+    }
+const user=await registerService({ name, email, password ,url});
+
+const token=user.generateAuthToken()
 res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', 
@@ -42,6 +61,7 @@ export const login=async(req,res)=>{
         const user=await loginService({email,password})
 
         const token=user.generateAuthToken();
+        
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', 
@@ -65,12 +85,13 @@ export const Logout=async(req,res)=>{
 export const Profile=async(req,res)=>{
     try {
         
-        const userId = req.user._id; // Assuming user ID is stored in req.user
-        const user = await User.findById(userId).select('-password'); // Exclude password from response
+        const userId = req.user._id; 
+        const user = await User.findById(userId).select('-password'); 
+       const token = req.cookies.token;
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
-        res.status(200).json({ msg: 'User profile fetched successfully', user });
+        res.status(200).json({ msg: 'User profile fetched successfully', user ,token});
     } catch (error) {
         res.status(500).json({msg:'Error fetching user profile',error:error.message});
         console.log('Error fetching user profile:', error);

@@ -1,15 +1,13 @@
 import User from "../models/user.model.js";
 
 
-export const registerService=async({name,email,password})=>{
+export const registerService=async({name,email,password,url})=>{
 try {
-    const userExists=await User.findOne({email})
-    if(userExists){
-        throw new Error('User already exists with this email');
-    }
+    
+    
 
 
-    const user=await User.create({name,email,password});
+    const user=await User.create({name,email,password,profilePicture:url});
 
   return user
 } catch (error) {

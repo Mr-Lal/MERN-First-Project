@@ -4,25 +4,32 @@ import { Server } from 'socket.io'
 
 
 const server=http.createServer(app);
-
-const io=new Server(server,{
-    cors:{
-        origin:'*'
-    }
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
 })
 
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+io.on('connection', (socket) => {
+  console.log('User connected: ', socket.id)
 
-io.on('connection',(socket)=>{
-    console.log(`New client connected: ${socket.id}`);
-    
-})
+  socket.on('add_todo', (todo) => {
+    // Broadcast to all users except sender
+    socket.broadcast.emit('todo_added', todo)
+  })
 
-io.on('disconnect',(socket)=>{
-    console.log(`Client disconnected: ${socket.id}`);
+  socket.on('update_todo', (todo) => {
+    socket.broadcast.emit('todo_updated', todo)
+  })
+
+  socket.on('delete_todo', (id) => {
+    socket.broadcast.emit('todo_deleted', id)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id)
+  })
 })
 
 
