@@ -12,6 +12,9 @@ const io = new Server(server, {
   }
 })
 
+global.io=io
+
+
 io.on('connection', (socket) => {
   console.log('User connected: ', socket.id)
 
@@ -37,7 +40,6 @@ socket.on('profileInfo',(info)=>{
   console.log(info);
   
 })
-global.io=io
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id)
   })

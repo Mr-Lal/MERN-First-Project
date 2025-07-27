@@ -9,17 +9,17 @@ const EditTodo = () => {
   const [description, setDescription] = useState('');
   const [titlePlaceholder, setTitlePlaceholder] = useState('');
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState('');
-
-  const { setTodoData } = useContext(DataContext);
   const { id } = useParams();
   const navigate = useNavigate();
-  const BaseUrl = import.meta.env.VITE_BASE_URL;
-
+  
+const token=localStorage.getItem('token')
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${BaseUrl}/todo/spacific/${id}`, {
-          withCredentials: true,
+        const res = await axios.get(`https://taskflow123.up.railway.app/todo/spacific/${id}`, {
+              headers: {
+    Authorization: `Bearer ${token}`
+  }
         });
 
         const todo = res.data.todo;
@@ -49,7 +49,7 @@ const EditTodo = () => {
 
     try {
       const res = await axios.put(
-        `${BaseUrl}/todo/update/${id}`,
+        `https://taskflow123.up.railway.app/todo/update/${id}`,
         { title, description },
         { withCredentials: true }
       );

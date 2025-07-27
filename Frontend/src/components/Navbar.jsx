@@ -8,15 +8,19 @@ const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
-  const BaseUrl = import.meta.env.VITE_BASE_URL;
   const navigate=useNavigate()
+  const token =localStorage.getItem('token')
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`${BaseUrl}/user/profile`, {
-          withCredentials: true,
+        const res = await axios.get(`https://taskflow123.up.railway.app/user/profile`, {
+          headers: {
+    Authorization: `Bearer ${token}`
+  }
         });
+        console.log(res);
+        
         setUserData(res.data.user);
       } catch (error) {
         console.log(error);
@@ -38,7 +42,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-    const res=  await axios.get(`${BaseUrl}/user/logout`, { withCredentials: true });
+    const res=  await axios.get(`https://taskflow123.up.railway.app/user/logout`, { withCredentials: true });
       if(res.status===200){
         setShowDropdown(false);
       localStorage.removeItem('token')

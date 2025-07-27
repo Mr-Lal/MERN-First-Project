@@ -17,14 +17,17 @@ const Home = () => {
   const [titlePlaceholder, setTitlePlaceholder] = useState('');
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState('');
 
-  const BaseUrl = import.meta.env.VITE_BASE_URL;
+const token=localStorage.getItem('token')
 
   useEffect(() => {
     const fetchTodo = async () => {
       try {
-        const res = await axios.get(`${BaseUrl}/todo/get`, {
-          withCredentials: true,
+        const res = await axios.get(`https://taskflow123.up.railway.app/todo/get`, {
+               headers: {
+    Authorization: `Bearer ${token}`
+  }
         });
+        console.log('this is from get todos',res)
         setTodoData(res.data.todos || []);
       } catch (error) {
         console.log(error);
@@ -62,8 +65,10 @@ const Home = () => {
 
   const openEditPopup = async (id) => {
     try {
-      const res = await axios.get(`${BaseUrl}/todo/spacific/${id}`, {
-        withCredentials: true,
+      const res = await axios.get(`https://taskflow123.up.railway.app/todo/spacific/${id}`, {
+            headers: {
+    Authorization: `Bearer ${token}`
+  }
       });
       const todo = res.data.todo;
       setEditId(todo._id);
@@ -84,9 +89,11 @@ const Home = () => {
 
     try {
       const res = await axios.put(
-        `${BaseUrl}/todo/update/${editId}`,
+        `https://taskflow123.up.railway.app/todo/update/${editId}`,
         { title, description },
-        { withCredentials: true }
+        {      headers: {
+    Authorization: `Bearer ${token}`
+  } }
       );
 
       if (res.status === 200) {

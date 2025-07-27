@@ -9,21 +9,21 @@ const AddTodo = () => {
 
   const navigate=useNavigate()
 
-  const BaseUrl = import.meta.env.VITE_BASE_URL;
-// should log the URL
 
+const token=localStorage.getItem('token')
   
 
   const handelSubmit =async (e) => {
     e.preventDefault()
     
     try {
-      const res=await axios.post(`${BaseUrl}/todo/add`,{title,description},{withCredentials:true})
+      const res=await axios.post(`https://taskflow123.up.railway.app/todo/add`,{title,description},{     headers: {
+    Authorization: `Bearer ${token}`
+  }})
       if(res.status===201){
 navigate('/')
       }
       
-      // socket.emit('add_todo', res.data.todo)
       
     } catch (error) {
       console.log(error);

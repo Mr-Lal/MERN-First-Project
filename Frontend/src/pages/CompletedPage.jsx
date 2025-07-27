@@ -12,12 +12,15 @@ const Completed = () => {
     const [quire,setQuire]=useState()
     const [todoData,setTodoData]=useState([])
     
-        const BaseUrl = import.meta.env.VITE_BASE_URL;
+    const token=localStorage.getItem('token')
+ 
 
     useEffect(()=>{
     const  fetchTodo=async()=>{
 try {
-  const res=await axios.get(`${BaseUrl}/todo/get`,{withCredentials:true})
+  const res=await axios.get(`https://taskflow123.up.railway.app/todo/get`,{     headers: {
+    Authorization: `Bearer ${token}`
+  }})
   setTodoData(res.data.todos || [])
   
   

@@ -13,13 +13,6 @@ import { ToastContainer } from 'react-toastify'
 
 const App = () => {
 
-  // const [todos,setTodos]=useState([])
-  // useEffect(()=>{
-  //    socket.on('todo_added', (newTodo) => {
-  //     setTodos((prev) => [...prev, newTodo])
-  //   })
-  // },[])
-  // console.log('socket io data',todos);
 
   
   

@@ -4,6 +4,8 @@ import axios from 'axios'
 import { useNavigate ,Link} from 'react-router-dom';
 import { TbLoader3 } from "react-icons/tb";
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie'
+
 
 
 const Signup = () => {
@@ -24,7 +26,7 @@ const Signup = () => {
     setProfileImage(file)
    
   };
-    const BaseUrl = import.meta.env.VITE_BASE_URL;
+  
 
 
 
@@ -36,11 +38,12 @@ setLoader(true)
 const data={name,email,password,profileImage}
     try {
 
-      const res=await axios.post(`${BaseUrl}/user/register`,data, {
+      const res=await axios.post(`https://taskflow123.up.railway.app/user/register`,data, {
         
   headers: {
     'Content-Type': 'multipart/form-data'
   }})
+  
  
       if(res.status===201){
       setLoader(false)
@@ -63,7 +66,7 @@ navigate('/login')
   }
 
   return (
-    <div className='container w-[928px] h-full mt-5 flex flex-col items-center justify-center'>
+    <div className='container max-w-[928px] px-4 h-full mt-5 flex flex-col items-center justify-center'>
       <h1 className='text-4xl font-bold mb-6'>Create Your Account</h1>
 
       {/* Profile Image Upload */}
@@ -132,7 +135,7 @@ navigate('/login')
         </button>
       </div>
 <p>i have already account <Link to={'/login'}><span className='text-blue-600 cursor-pointer'>Login</span></Link></p>
-      <button className='bg-blue-600 text-white gap-3 flex items-center justify-center w-1/8 h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
+      <button className='bg-blue-600 text-white gap-3 flex items-center justify-center sm:w-1/5 w-full h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
       onClick={(e) =>handelFormSubmit(e)}>
         Sign Up <p className={`text-lg ${loader ? "flex animate-spin" : "hidden"}`}>
   <TbLoader3 />

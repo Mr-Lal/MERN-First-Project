@@ -9,13 +9,13 @@ import axios from 'axios'
 const TodoCard = ({ title, description, id,completed }) => {
   const [isChecked, setIsChecked] = useState(false);
 
-  const BaseUrl = import.meta.env.VITE_BASE_URL;
+const token=localStorage.getItem('token')
 
   const deleteTodo=async()=>{
 socket.emit("deleteTodo",id)
 
     try {
-      const res=await axios.delete(`${BaseUrl}/todo/delete/${id}`,{withCredentials:true})
+      const res=await axios.delete(`https://taskflow123.up.railway.app/todo/delete/${id}`,{withCredentials:true})
       console.log(res);
       
       
@@ -26,7 +26,9 @@ socket.emit("deleteTodo",id)
   }
   const completeTodo=async()=>{
     try {
-      const res=await axios.put(`${BaseUrl}/todo/${id}/complete`,{withCredentials:true})
+      const res=await axios.put(`https://taskflow123.up.railway.app/todo/${id}/complete`,{     headers: {
+    Authorization: `Bearer ${token}`
+  }})
    
       console.log(res);
       

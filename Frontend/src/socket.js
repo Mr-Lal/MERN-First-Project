@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
 
-const URL=import.meta.env.VITE_BASE_URL;
 
-export const socket = io(URL) 
+
+export const socket = io('https://taskflow123.up.railway.app') 

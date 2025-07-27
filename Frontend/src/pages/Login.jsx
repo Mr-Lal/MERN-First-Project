@@ -3,6 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { TbLoader3 } from "react-icons/tb";
+import Cookies from 'js-cookie'
 
 const Login = () => {
       const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +14,9 @@ const Login = () => {
 
       const navigate=useNavigate()
 
-        const BaseUrl = import.meta.env.VITE_BASE_URL;
+        
+      
+        
          const handelFormSubmit = async(e) => {
 
     e.preventDefault();
@@ -23,9 +26,11 @@ setLoader(true)
       password
     }
     try {
-const res=await axios.post(`${BaseUrl}/user/login`,data,{withCredentials:true})
- console.log(res);
+const res=await axios.post(`https://taskflow123.up.railway.app/user/login`,data,{withCredentials:true})
   localStorage.setItem('token',res.data.token)
+  Cookies.set('token', res.data.token, {
+  expires: 7,        
+});
 if(res.status===200){
   setLoader(false)
   navigate('/')
@@ -33,13 +38,13 @@ if(res.status===200){
 
       
     } catch (err) {
-      console.log(err);
+      
       setLoader(false)
       
     if (Array.isArray(err?.response?.data?.errors)) {
   setErrors(err.response.data.errors[0]);
 } else {
-  setErrors("Something went wrong"); // or show a default message
+  setErrors(err.response.data.error); // or show a default message
 }
      
       
@@ -59,7 +64,7 @@ if(res.status===200){
         onChange={(e) => setEmail(e.target.value)}
         value={email}
       />
-      {errors.path=='email'?<p className='text-red-600 '>{errors.msg}</p>:null}
+      {errors?.path=='email'?<p className='text-red-600 '>{errors.msg}</p>:null}
 
       <div className='relative w-full max-w-md mb-6'>
         <input
@@ -69,7 +74,7 @@ if(res.status===200){
             onChange={(e) => setPassword(e.target.value)}
             value={password}
         />
-       {errors.path=='password'?<p className='text-red-600 '>{errors.msg}</p>:null}
+       {errors?.path=='password'?<p className='text-red-600 '>{errors.msg}</p>:null}
         <button
           type='button'
           className='absolute right-3  top-2.5 text-gray-500'
