@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import { socket } from '../socket';
+// import { socket } from '../socket';
 
 const AddTodo = () => {
   const [title,setTitle] = useState('');
@@ -23,7 +23,7 @@ const AddTodo = () => {
 navigate('/')
       }
       
-      socket.emit('add_todo', res.data.todo)
+      // socket.emit('add_todo', res.data.todo)
       
     } catch (error) {
       console.log(error);
@@ -33,7 +33,7 @@ navigate('/')
    
     }
   return (
-    <div className='container w-[928px] h-full mt-5 flex flex-col  items-center justify-between'>
+    <div className='container max-w-[928px] px-4 h-full mt-5 flex flex-col  items-center justify-between'>
  <h1 className='text-4xl font-bold '>Add New Task</h1>
     <form className='flex flex-col gap-8 w-full mt-5' >   
 

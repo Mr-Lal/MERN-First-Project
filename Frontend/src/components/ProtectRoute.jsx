@@ -1,9 +1,10 @@
 // src/components/Protect.jsx
+import { Cookie } from 'lucide-react'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const Protect = ({ children }) => {
-const token=localStorage.getItem('token')
+const token=localStorage.getItem('token') 
 
 
 

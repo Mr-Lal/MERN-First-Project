@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaPencilAlt, FaTrash,FaCheckCircle } from "react-icons/fa";
 import { Link } from 'react-router-dom';
+import { socket } from '../socket';
 
 
 import axios from 'axios'
@@ -11,6 +12,8 @@ const TodoCard = ({ title, description, id,completed }) => {
   const BaseUrl = import.meta.env.VITE_BASE_URL;
 
   const deleteTodo=async()=>{
+socket.emit("deleteTodo",id)
+
     try {
       const res=await axios.delete(`${BaseUrl}/todo/delete/${id}`,{withCredentials:true})
       console.log(res);
@@ -34,7 +37,7 @@ const TodoCard = ({ title, description, id,completed }) => {
   }
 
   return (
-    <div className='container w-[928px] h-full mt-5 flex items-center justify-between'>
+    <div className='container max-w-[928px] h-full mt-5 px-4 flex items-center justify-between'>
       <div className='flex items-center gap-3'>
 
        {completed?null: <input
@@ -63,9 +66,7 @@ const TodoCard = ({ title, description, id,completed }) => {
           </p>
         )}
        
-      {completed?<p>Completed</p>:  <Link to={`/edit-todo/${id}`}>
-          <p className='cursor-pointer'><FaPencilAlt /></p>
-        </Link>}
+    
       </div>
     </div>
   )

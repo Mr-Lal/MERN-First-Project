@@ -3,6 +3,7 @@ dotenv.config();
 import  imagekit  from 'imagekit';
 
 
+
 const uploadImage = new imagekit({
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
   privateKey: process.env.IMAGEKIT_PRIVATE_KEY,

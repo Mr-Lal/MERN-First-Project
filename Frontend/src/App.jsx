@@ -9,23 +9,24 @@ import Protect from './components/ProtectRoute'
 import EditTodo from './pages/EditTodo'
 import Completed from './pages/CompletedPage'
 import Active from './pages/Active'
-import {socket} from './socket'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { ToastContainer } from 'react-toastify'
 
 const App = () => {
-  const [todos,setTodos]=useState([])
- 
-  useEffect(()=>{
-     socket.on('todo_added', (newTodo) => {
-      setTodos((prev) => [...prev, newTodo])
-    })
-  },[])
-  console.log('socket io data',todos);
+
+  // const [todos,setTodos]=useState([])
+  // useEffect(()=>{
+  //    socket.on('todo_added', (newTodo) => {
+  //     setTodos((prev) => [...prev, newTodo])
+  //   })
+  // },[])
+  // console.log('socket io data',todos);
+
+  
   
   return (
     <div>
         <Navbar/>
+        <ToastContainer/>
 
     <Routes>
 

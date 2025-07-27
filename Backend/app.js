@@ -6,6 +6,7 @@ import connectDB from './db/db.js';
 import userRoutes from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
 import todoRoutes from './routes/todo.route.js';
+import bodyParser from 'body-parser';
 
 
 
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser())
+// app.use(bodyParser())
 
 connectDB();
 

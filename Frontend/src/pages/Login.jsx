@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { TbLoader3 } from "react-icons/tb";
 
 const Login = () => {
       const [showPassword, setShowPassword] = useState(false);
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
       const [errors,setErrors]=useState([])
+    const [loader,setLoader]=useState(false)
 
       const navigate=useNavigate()
 
@@ -15,7 +17,7 @@ const Login = () => {
          const handelFormSubmit = async(e) => {
 
     e.preventDefault();
-
+setLoader(true)
     const data={
       email,
       password
@@ -25,12 +27,14 @@ const res=await axios.post(`${BaseUrl}/user/login`,data,{withCredentials:true})
  console.log(res);
   localStorage.setItem('token',res.data.token)
 if(res.status===200){
+  setLoader(false)
   navigate('/')
 }
 
       
     } catch (err) {
       console.log(err);
+      setLoader(false)
       
     if (Array.isArray(err?.response?.data?.errors)) {
   setErrors(err.response.data.errors[0]);
@@ -76,9 +80,12 @@ if(res.status===200){
       </div>
 <p>i am creating new account <Link to={'/signup'}><span className='text-blue-600 cursor-pointer'>Signup</span></Link></p>
 
-      <button className='bg-blue-600 text-white w-1/8 h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
+      <button className='bg-blue-600 text-white flex items-center justify-center gap-3 w-1/8 h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
       onClick={(e) =>handelFormSubmit(e)}>
      Log In
+     <p className={`text-lg ${loader ? "flex animate-spin" : "hidden"}`}>
+       <TbLoader3 />
+     </p>
       </button>
      </div>
       </div>

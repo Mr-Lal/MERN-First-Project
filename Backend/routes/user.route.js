@@ -27,7 +27,7 @@ router.post('/register',upload.single('profileImage'), [
 router.post('/login',
   [ body('email')
     .notEmpty().withMessage('Email is required')
-    .isEmail().withMessage('Invalid email address'),,
+    .isEmail().withMessage('Invalid email address'),
 
   body('password')
     .notEmpty().withMessage('Password is required')

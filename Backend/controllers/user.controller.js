@@ -1,14 +1,13 @@
-import { validationResult } from "express-validator";
+import { cookie, validationResult } from "express-validator";
 import { registerService,loginService } from "../services/user.service.js";
 import User from "../models/user.model.js";
 import uploadImage from "../utils/imageket.js";
+import BlackListedToken from '../models/BlackListedToken.js'
+
 
 
 export const registerUser=async(req,res)=>{
     try {
-
-
-
 if(!validationResult(req).isEmpty()) {
     return res.status(400).json({ errors: validationResult(req).array() });
 }
@@ -32,6 +31,8 @@ if(userExists){
         
     }
 const user=await registerService({ name, email, password ,url});
+
+global.io.emit('profileInfo', user);
 
 const token=user.generateAuthToken()
 res.cookie('token', token, {
@@ -75,6 +76,12 @@ export const login=async(req,res)=>{
 
 export const Logout=async(req,res)=>{
     try {
+      const token = req.cookies.token;
+        await BlackListedToken.create({
+    token,
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000) // 1 hour expiry
+  });
+
         res.clearCookie('token');
         res.status(200).json({msg:'User logged out successfully'});
     } catch (error) {

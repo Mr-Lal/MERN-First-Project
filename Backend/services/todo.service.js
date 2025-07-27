@@ -9,7 +9,8 @@ export const addTodoService= async({title,description,userId})=>{
             description,
             userId
         })
-
+        
+global.io.emit("addTodo",newTodo)
         return newTodo
     } catch (error) {
         console.error("Error in TodoService:", error);
@@ -19,10 +20,9 @@ export const addTodoService= async({title,description,userId})=>{
 
 export const deleteTodoService=async(id)=>{
     try {
+      
         const deletedTodo=await Todo.findByIdAndDelete(id);
-        if (!deletedTodo) {
-            throw new Error("Todo not found");
-        }
+    
         return deletedTodo;
     } catch (error) {
         console.error("Error in TodoService:", error);

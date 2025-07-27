@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Eye, EyeOff,  } from 'lucide-react';
 import axios from 'axios'
 import { useNavigate ,Link} from 'react-router-dom';
+import { TbLoader3 } from "react-icons/tb";
+import { toast } from 'react-toastify';
+
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +14,7 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [errors,setErrors]=useState([])
     const navigate=useNavigate()
+    const [loader,setLoader]=useState(false)
 
 
 
@@ -26,7 +30,7 @@ const Signup = () => {
 
   const handelFormSubmit = async(e) => {
     e.preventDefault();
-
+setLoader(true)
     
     
 const data={name,email,password,profileImage}
@@ -39,10 +43,13 @@ const data={name,email,password,profileImage}
   }})
  
       if(res.status===201){
+      setLoader(false)
+
 navigate('/login')
       }
       
     } catch (err) {
+      toast.error(`your internet is slow`,)
      if (Array.isArray(err?.response?.data?.errors)) {
   setErrors(err.response.data.errors[0]);
 } else {
@@ -125,9 +132,12 @@ navigate('/login')
         </button>
       </div>
 <p>i have already account <Link to={'/login'}><span className='text-blue-600 cursor-pointer'>Login</span></Link></p>
-      <button className='bg-blue-600 text-white w-1/8 h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
+      <button className='bg-blue-600 text-white gap-3 flex items-center justify-center w-1/8 h-10 cursor-pointer px-6 py-2 rounded-lg hover:bg-blue-700'
       onClick={(e) =>handelFormSubmit(e)}>
-        Sign Up
+        Sign Up <p className={`text-lg ${loader ? "flex animate-spin" : "hidden"}`}>
+  <TbLoader3 />
+</p>
+
       </button>
       </div>
     </div>
